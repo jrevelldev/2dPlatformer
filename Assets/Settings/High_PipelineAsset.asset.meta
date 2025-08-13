@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3228d3fb962231443adbde03957d4739
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Settings/High_PipelineAsset.asset
+  uploadId: 683079

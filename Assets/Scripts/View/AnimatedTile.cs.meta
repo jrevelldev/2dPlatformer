@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 9df11d2ad44624917bf3586aa9303279
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Scripts/View/AnimatedTile.cs
+  uploadId: 683079

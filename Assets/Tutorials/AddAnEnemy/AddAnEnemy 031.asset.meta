@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 189edae67694549d7a713a5feffd1094
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tutorials/AddAnEnemy/AddAnEnemy 031.asset
+  uploadId: 683079

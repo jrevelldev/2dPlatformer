@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 91fcc8d06d79c4678aabe2abed234213
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Scripts/Mechanics/PatrolPath.Mover.cs
+  uploadId: 683079

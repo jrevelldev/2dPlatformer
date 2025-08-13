@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b09e60546065cf9448b36ebb7f759a91
+timeCreated: 1438790907
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Character/Animations/Player.controller
+  uploadId: 683079

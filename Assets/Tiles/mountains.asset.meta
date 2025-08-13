@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 17d8f745a300ff948ac10cceb364a2dc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tiles/mountains.asset
+  uploadId: 683079

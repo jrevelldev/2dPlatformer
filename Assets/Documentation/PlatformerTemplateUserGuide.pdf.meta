@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0524922b62a934711aae0e12a6f1e31c
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Documentation/PlatformerTemplateUserGuide.pdf
+  uploadId: 683079

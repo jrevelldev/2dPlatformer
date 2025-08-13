@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8eb592304a34d4688ae5cb2bbd92c03a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tutorials/EditColors/EditColors 16.asset
+  uploadId: 683079

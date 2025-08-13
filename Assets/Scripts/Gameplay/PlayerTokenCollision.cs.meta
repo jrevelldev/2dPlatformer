@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 280a2907710a44d77a3ecb703ab792f5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Scripts/Gameplay/PlayerTokenCollision.cs
+  uploadId: 683079

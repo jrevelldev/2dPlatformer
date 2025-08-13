@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e0e8baec160e44e1bb74ca8e08777453
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Character/Animations/PlayerDeath.anim
+  uploadId: 683079

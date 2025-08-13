@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8eabb3e8a9f87443da0ea2a1a2101fb8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Scripts/Mechanics/TokenController.cs
+  uploadId: 683079

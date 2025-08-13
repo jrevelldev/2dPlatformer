@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7be2a636bd2904cecadaf28665c07333
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Mod Assets/Mod Resources/Scripts/Backend/TemplateEditorDetection.cs
+  uploadId: 683079

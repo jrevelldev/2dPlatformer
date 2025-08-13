@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 13109c3c5779a483288f8fa77ffbcbd5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tutorials/EditorControls/EditorControls 02-Scene-View - delete.asset
+  uploadId: 683079

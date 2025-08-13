@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: be4d02721cd9d4baa869d3b890cec48f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Scripts/Mechanics/AnimationController.cs
+  uploadId: 683079

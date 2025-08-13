@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8151a21a86e8443db8efcec43314dece
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Character/Animations/EnemyDeath.anim
+  uploadId: 683079

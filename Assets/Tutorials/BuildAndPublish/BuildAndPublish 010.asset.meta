@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fcca6e4cbcfd27e49bf16a7c3a6eb019
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tutorials/BuildAndPublish/BuildAndPublish 010.asset
+  uploadId: 683079

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6d1eca749f9f840299a309e3fd0302af
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Character/Animations/EnemyHurt.anim
+  uploadId: 683079

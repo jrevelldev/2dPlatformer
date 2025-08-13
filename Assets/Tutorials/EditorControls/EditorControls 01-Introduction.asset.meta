@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fef67ab638dae4a14a5508ea356cddc1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tutorials/EditorControls/EditorControls 01-Introduction.asset
+  uploadId: 683079

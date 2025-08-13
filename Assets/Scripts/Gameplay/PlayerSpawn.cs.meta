@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8fc2f862cb18245199adc2074a7f2b4e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Scripts/Gameplay/PlayerSpawn.cs
+  uploadId: 683079

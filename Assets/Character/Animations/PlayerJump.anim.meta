@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1d7e02f8cf5ba47a78bc1e19cc378478
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Character/Animations/PlayerJump.anim
+  uploadId: 683079

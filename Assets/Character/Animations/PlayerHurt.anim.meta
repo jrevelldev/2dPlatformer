@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: acd3fdc6781e749908cec8f29cbac75f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Character/Animations/PlayerHurt.anim
+  uploadId: 683079

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 08664b222211f4218bcf3356bf7bae3e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tutorials/EditorControls/EditorControls 04-Try-Hand-Tool.asset
+  uploadId: 683079

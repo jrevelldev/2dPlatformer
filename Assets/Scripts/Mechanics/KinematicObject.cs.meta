@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 565fbc50999104819abb0f2031ff5ac9
+timeCreated: 1510179534
+licenseType: Store
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Scripts/Mechanics/KinematicObject.cs
+  uploadId: 683079

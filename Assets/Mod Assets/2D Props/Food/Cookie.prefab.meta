@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 02a7eb52a33a2de4fafd64660a1fe663
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Mod Assets/2D Props/Food/Cookie.prefab
+  uploadId: 683079

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c83a4ddcf9c7a489cb25b31f69c78791
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tutorials/EditorControls/EditorControls 17-Select-Move.asset
+  uploadId: 683079

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 83505d070f34d4a13807e938baeb0cbb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Scripts/Core/Fuzzy.cs
+  uploadId: 683079

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8ffc15ca897ef94428428a26ead7bd6d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tiles/TileFloatingLeftEdge.asset
+  uploadId: 683079

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 31dfa4f98b707e143912a08d1b696719
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 151055
+  packageName: Platformer Microgame
+  packageVersion: 4.0
+  assetPath: Assets/Tutorials/Unity.Platformer.Tutorials.asmdef
+  uploadId: 683079
