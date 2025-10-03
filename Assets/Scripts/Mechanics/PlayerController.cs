@@ -10,27 +10,26 @@ namespace Platformer.Mechanics
 {
     /// <summary>
     /// This is the main class used to implement control of the player.
-    /// It is a superset of the AnimationController class, but is inlined to allow for any kind of customisation.
     /// </summary>
     public class PlayerController : KinematicObject
     {
+        public int playerId = 1; // Set 1..4 per prefab/instance in Inspector
+
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
 
-        /// <summary>
-        /// Max horizontal speed of the player.
-        /// </summary>
+        /// <summary>Max horizontal speed of the player.</summary>
         public float maxSpeed = 7;
-        /// <summary>
-        /// Initial jump velocity at the start of a jump.
-        /// </summary>
+        /// <summary>Initial jump velocity at the start of a jump.</summary>
         public float jumpTakeOffSpeed = 7;
 
         public JumpState jumpState = JumpState.Grounded;
         private bool stopJump;
-        /*internal new*/ public Collider2D collider2d;
-        /*internal new*/ public AudioSource audioSource;
+        /*internal new*/
+        public Collider2D collider2d;
+        /*internal new*/
+        public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
 
@@ -41,6 +40,13 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
 
         public Bounds Bounds => collider2d.bounds;
+
+        // --- NEW: per-instance input names (default to P1) ---
+        [Header("Input (old Input Manager)")]
+        [Tooltip("Axis name defined in Project Settings > Input Manager")]
+        public string horizontalAxis = "Horizontal";   // NEW
+        [Tooltip("Button name defined in Project Settings > Input Manager")]
+        public string jumpButton = "Jump";             // NEW
 
         void Awake()
         {
@@ -55,10 +61,12 @@ namespace Platformer.Mechanics
         {
             if (controlEnabled)
             {
-                move.x = Input.GetAxis("Horizontal");
-                if (jumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
+                // NEW: use per-instance names instead of hard-coded strings
+                move.x = Input.GetAxis(horizontalAxis);
+
+                if (jumpState == JumpState.Grounded && Input.GetButtonDown(jumpButton))
                     jumpState = JumpState.PrepareToJump;
-                else if (Input.GetButtonUp("Jump"))
+                else if (Input.GetButtonUp(jumpButton))
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
