@@ -1,4 +1,6 @@
-// RoundManager.cs (TMP edition: fall-until-ground, then freeze)
+﻿// RoundManager.cs (TMP edition: fall-until-ground, then freeze)
+// This version ALWAYS auto-starts a new round on scene load/reload.
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,7 +27,7 @@ public class RoundManager : MonoBehaviour
     [Tooltip("Round duration (seconds).")]
     public int roundDurationSeconds = 60;
 
-    [Tooltip("Start automatically on Play.")]
+    [Tooltip("Start automatically on Play (kept for inspector compatibility; ignored by this build).")]
     public bool autoStart = true;
 
     [Header("Simple UI (TMP)")]
@@ -59,23 +61,34 @@ public class RoundManager : MonoBehaviour
     float timeLeft;
     readonly Dictionary<GameObject, int> scores = new Dictionary<GameObject, int>();
 
+    // --- This runs before any scene starts, and clears static data (fixes sticky scores) ---
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void ResetStatics_BeforeSceneLoad()
+    {
+        Instance = null;
+    }
+
     void Awake()
     {
+        // Singleton setup
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
+        // ✅ Always clear and rebuild scores on scene load
+        scores.Clear();
         foreach (var p in players)
-            if (p != null && !scores.ContainsKey(p))
+            if (p != null)
                 scores[p] = 0;
 
-        if (setupPanel != null) setupPanel.SetActive(!autoStart);
+        // Hide UI panels on load; we'll show/hide as the round begins/ends.
+        if (setupPanel != null) setupPanel.SetActive(false);   // ensure no flicker before Start() runs
         if (resultsPanel != null) resultsPanel.SetActive(false);
     }
 
     void Start()
     {
-        if (autoStart) BeginRound();
-        else UpdateTimerUI(roundDurationSeconds);
+        // ✅ ALWAYS start a new round on scene load/reload
+        BeginRound();
     }
 
     void Update()
@@ -92,7 +105,6 @@ public class RoundManager : MonoBehaviour
     }
 
     // ===== Public API =====
-    // TMP version (hook the button and drag a TMP_InputField parameter)
     public void BeginRoundFromUI(TMP_InputField durationField = null)
     {
         if (durationField != null && int.TryParse(durationField.text, out var secs))
@@ -100,7 +112,6 @@ public class RoundManager : MonoBehaviour
         BeginRound();
     }
 
-    // Convenience: if you prefer no parameters on the Button, assign 'durationInput' in Inspector and hook this one.
     public void BeginRoundFromUI_NoParam()
     {
         if (durationInput != null && int.TryParse(durationInput.text, out var secs))
@@ -112,6 +123,7 @@ public class RoundManager : MonoBehaviour
     {
         if (players.Count == 0) { Debug.LogWarning("RoundManager: No players assigned."); return; }
 
+        // reset per-round scores
         foreach (var key in new List<GameObject>(scores.Keys))
             scores[key] = 0;
 
@@ -123,6 +135,7 @@ public class RoundManager : MonoBehaviour
 
         UnfreezePlayers(true);
         if (logDebug) Debug.Log("[RoundManager] Round started.");
+        UpdateTimerUI(timeLeft);
     }
 
     public void EndRound()
@@ -130,17 +143,14 @@ public class RoundManager : MonoBehaviour
         if (state != RoundState.Playing) return;
         state = RoundState.Finished;
 
-        // 1) Disable player input/movement immediately
         TogglePlayerControl(false);
 
-        // 2) For each player: fall until grounded, then freeze solid
         foreach (var p in players)
         {
             if (p == null) continue;
             StartCoroutine(GroundAndFreeze(p));
         }
 
-        // Compute winners
         int best = int.MinValue;
         var winners = new List<GameObject>();
         foreach (var kv in scores)
