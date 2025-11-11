@@ -8,27 +8,20 @@ using Platformer.Core;
 
 namespace Platformer.Mechanics
 {
-    /// <summary>
-    /// This is the main class used to implement control of the player.
-    /// </summary>
     public class PlayerController : KinematicObject
     {
-        public int playerId = 1; // Set 1..4 per prefab/instance in Inspector
+        public int playerId = 1;
 
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
 
-        /// <summary>Max horizontal speed of the player.</summary>
         public float maxSpeed = 7;
-        /// <summary>Initial jump velocity at the start of a jump.</summary>
         public float jumpTakeOffSpeed = 7;
 
         public JumpState jumpState = JumpState.Grounded;
-        private bool stopJump;
-        /*internal new*/
+        bool stopJump;
         public Collider2D collider2d;
-        /*internal new*/
         public AudioSource audioSource;
         public Health health;
         public bool controlEnabled = true;
@@ -41,12 +34,21 @@ namespace Platformer.Mechanics
 
         public Bounds Bounds => collider2d.bounds;
 
-        // --- NEW: per-instance input names (default to P1) ---
         [Header("Input (old Input Manager)")]
-        [Tooltip("Axis name defined in Project Settings > Input Manager")]
-        public string horizontalAxis = "Horizontal";   // NEW
-        [Tooltip("Button name defined in Project Settings > Input Manager")]
-        public string jumpButton = "Jump";             // NEW
+        public string horizontalAxis = "Horizontal";
+        public string jumpButton = "Jump";
+
+        // ✅ COYOTE TIME + JUMP BUFFER ONLY
+        [Header("Jump Forgiveness")]
+        [Tooltip("Time you can still jump after leaving ground.")]
+        public float coyoteTime = 0.10f;
+
+        [Tooltip("Allows pressing jump slightly before landing.")]
+        public float jumpBufferTime = 0.10f;
+
+        float coyoteTimer;
+        float jumpBufferTimer;
+
 
         void Awake()
         {
@@ -59,23 +61,33 @@ namespace Platformer.Mechanics
 
         protected override void Update()
         {
+            // Update timers
+            if (IsGrounded) coyoteTimer = coyoteTime;
+            else coyoteTimer -= Time.deltaTime;
+
+            jumpBufferTimer -= Time.deltaTime;
+
             if (controlEnabled)
             {
-                // NEW: use per-instance names instead of hard-coded strings
                 move.x = Input.GetAxis(horizontalAxis);
 
-                if (jumpState == JumpState.Grounded && Input.GetButtonDown(jumpButton))
-                    jumpState = JumpState.PrepareToJump;
-                else if (Input.GetButtonUp(jumpButton))
+                if (Input.GetButtonDown(jumpButton))
+                    jumpBufferTimer = jumpBufferTime;
+
+                if (Input.GetButtonUp(jumpButton))
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
                 }
+
+                if (jumpBufferTimer > 0 && (IsGrounded || coyoteTimer > 0))
+                {
+                    jumpState = JumpState.PrepareToJump;
+                    jumpBufferTimer = 0;
+                }
             }
-            else
-            {
-                move.x = 0;
-            }
+            else move.x = 0;
+
             UpdateJumpState();
             base.Update();
         }
@@ -90,6 +102,7 @@ namespace Platformer.Mechanics
                     jump = true;
                     stopJump = false;
                     break;
+
                 case JumpState.Jumping:
                     if (!IsGrounded)
                     {
@@ -97,13 +110,15 @@ namespace Platformer.Mechanics
                         jumpState = JumpState.InFlight;
                     }
                     break;
+
                 case JumpState.InFlight:
-                    if (IsGrounded)
+                    if (IsGrounded && velocity.y <= 0)
                     {
                         Schedule<PlayerLanded>().player = this;
                         jumpState = JumpState.Landed;
                     }
                     break;
+
                 case JumpState.Landed:
                     jumpState = JumpState.Grounded;
                     break;
@@ -112,24 +127,20 @@ namespace Platformer.Mechanics
 
         protected override void ComputeVelocity()
         {
-            if (jump && IsGrounded)
+            if (jump && (IsGrounded || coyoteTimer > 0))
             {
                 velocity.y = jumpTakeOffSpeed * model.jumpModifier;
                 jump = false;
+                coyoteTimer = 0;
             }
             else if (stopJump)
             {
                 stopJump = false;
-                if (velocity.y > 0)
-                {
-                    velocity.y = velocity.y * model.jumpDeceleration;
-                }
+                if (velocity.y > 0) velocity.y *= model.jumpDeceleration;
             }
 
-            if (move.x > 0.01f)
-                spriteRenderer.flipX = false;
-            else if (move.x < -0.01f)
-                spriteRenderer.flipX = true;
+            if (move.x > 0.01f) spriteRenderer.flipX = false;
+            else if (move.x < -0.01f) spriteRenderer.flipX = true;
 
             animator.SetBool("grounded", IsGrounded);
             animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
