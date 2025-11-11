@@ -8,65 +8,104 @@ using Platformer.Core;
 
 namespace Platformer.Mechanics
 {
-    public class PlayerController : KinematicObject
+    [DisallowMultipleComponent]
+    public class PlayerController : MonoBehaviour
     {
+        [Header("Identity / Audio")]
         public int playerId = 1;
-
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
 
-        public float maxSpeed = 7;
-        public float jumpTakeOffSpeed = 7;
+        [Header("Movement (legacy names kept)")]
+        public float maxSpeed = 7f;              // horitzontal
+        public float jumpTakeOffSpeed = 7f;      // impuls vertical
 
-        public JumpState jumpState = JumpState.Grounded;
-        bool stopJump;
+        [Header("Animator / Components")]
         public Collider2D collider2d;
         public AudioSource audioSource;
         public Health health;
-        public bool controlEnabled = true;
-
-        bool jump;
-        Vector2 move;
-        SpriteRenderer spriteRenderer;
         internal Animator animator;
-        readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        SpriteRenderer spriteRenderer;
 
-        public Bounds Bounds => collider2d.bounds;
+        [Header("Enable/Disable Control")]
+        public bool controlEnabled = true;
 
         [Header("Input (old Input Manager)")]
         public string horizontalAxis = "Horizontal";
         public string jumpButton = "Jump";
 
-        // ✅ COYOTE TIME + JUMP BUFFER ONLY
         [Header("Jump Forgiveness")]
         [Tooltip("Time you can still jump after leaving ground.")]
         public float coyoteTime = 0.10f;
-
         [Tooltip("Allows pressing jump slightly before landing.")]
         public float jumpBufferTime = 0.10f;
+
+        [Header("Physics (simple motor)")]
+        public Rigidbody2D rb;
+        public Transform groundCheck;
+        public LayerMask groundLayer;
+        public float groundCheckRadius = 0.2f;
+        public float acceleration = 60f;
+        public float deceleration = 60f;
+        [Tooltip("Retalla l'alçada si deixes el botó durant la pujada")]
+        public float jumpCutMultiplier = 0.5f;
+
+        // Estat de salt (manté el teu enum i flux)
+        public JumpState jumpState = JumpState.Grounded;
+
+        // Interns
+        readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
+        public Bounds Bounds => collider2d ? collider2d.bounds : new Bounds(transform.position, Vector3.one);
+
+        bool stopJump;            // en deixar anar el botó
+        bool jump;                // sol·licitud de salt
+        Vector2 move;             // entrada horitzontal
 
         float coyoteTimer;
         float jumpBufferTimer;
 
+        bool wasGrounded;
+        bool _isGrounded;         // estat actual de terra
+
+        // --- COMPAT: algunes lògiques poden llegir si estem a terra
+        public bool IsGrounded => _isGrounded;
+
+        void Reset()
+        {
+            collider2d = GetComponent<Collider2D>();
+            audioSource = GetComponent<AudioSource>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            animator = GetComponent<Animator>();
+
+            rb = GetComponent<Rigidbody2D>();
+            if (!rb) rb = gameObject.AddComponent<Rigidbody2D>();
+            rb.gravityScale = 3f;
+            rb.freezeRotation = true;
+
+            if (!collider2d) gameObject.AddComponent<BoxCollider2D>();
+        }
 
         void Awake()
         {
             health = GetComponent<Health>();
-            audioSource = GetComponent<AudioSource>();
-            collider2d = GetComponent<Collider2D>();
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            animator = GetComponent<Animator>();
+            if (!audioSource) audioSource = GetComponent<AudioSource>();
+            if (!collider2d) collider2d = GetComponent<Collider2D>();
+            if (!spriteRenderer) spriteRenderer = GetComponent<SpriteRenderer>();
+            if (!animator) animator = GetComponent<Animator>();
+            if (!rb) rb = GetComponent<Rigidbody2D>();
         }
 
-        protected override void Update()
+        void Update()
         {
-            // Update timers
-            if (IsGrounded) coyoteTimer = coyoteTime;
-            else coyoteTimer -= Time.deltaTime;
+            // --- Ground check simple
+            _isGrounded = (groundCheck && Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer));
 
+            // Timers
+            if (_isGrounded) coyoteTimer = coyoteTime; else coyoteTimer -= Time.deltaTime;
             jumpBufferTimer -= Time.deltaTime;
 
+            // Input
             if (controlEnabled)
             {
                 move.x = Input.GetAxis(horizontalAxis);
@@ -80,72 +119,112 @@ namespace Platformer.Mechanics
                     Schedule<PlayerStopJump>().player = this;
                 }
 
-                if (jumpBufferTimer > 0 && (IsGrounded || coyoteTimer > 0))
+                // Buffer + Coyote → PrepareToJump
+                if (jumpBufferTimer > 0f && (_isGrounded || coyoteTimer > 0f))
                 {
                     jumpState = JumpState.PrepareToJump;
-                    jumpBufferTimer = 0;
+                    jumpBufferTimer = 0f;
                 }
             }
-            else move.x = 0;
+            else
+            {
+                move.x = 0f;
+            }
 
             UpdateJumpState();
-            base.Update();
+
+            // Flip
+            if (spriteRenderer)
+            {
+                if (move.x > 0.01f) spriteRenderer.flipX = false;
+                else if (move.x < -0.01f) spriteRenderer.flipX = true;
+            }
+
+            // Animator (paràmetres originals)
+            if (animator)
+            {
+                animator.SetBool("grounded", _isGrounded);
+                float vx = rb ? rb.linearVelocity.x : 0f;
+                animator.SetFloat("velocityX", Mathf.Abs(vx) / Mathf.Max(0.01f, maxSpeed));
+            }
+
+            // Event d’aterratge (equivalent Microgame)
+            if (_isGrounded && !wasGrounded && (jumpState == JumpState.InFlight || jumpState == JumpState.Jumping))
+            {
+                Schedule<PlayerLanded>().player = this;
+                jumpState = JumpState.Landed;
+            }
+            wasGrounded = _isGrounded;
+        }
+
+        void FixedUpdate()
+        {
+            if (!rb) return;
+
+            // Moviment horitzontal amb accel/decel
+            float targetSpeed = move.x * maxSpeed;
+            float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
+            float newX = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
+            rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
+
+            // Jump cut en deixar el botó
+            if (stopJump)
+            {
+                stopJump = false;
+                if (rb.linearVelocity.y > 0f)
+                {
+                    // respecta model.jumpDeceleration
+                    float cutFactor = Mathf.Clamp01(1f - jumpCutMultiplier);
+                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * model.jumpDeceleration * (cutFactor <= 0f ? 0.5f : cutFactor));
+                }
+            }
+
+            // Aplicació del salt
+            if (jump)
+            {
+                jump = false;
+
+                // neteja caiguda per un salt net
+                float vy = rb.linearVelocity.y;
+                if (vy < 0f) vy = 0f;
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, vy);
+
+                float impulse = jumpTakeOffSpeed * Mathf.Max(0f, model.jumpModifier);
+                rb.AddForce(Vector2.up * impulse, ForceMode2D.Impulse);
+
+                // Event de salt (moment equiparable)
+                Schedule<PlayerJumped>().player = this;
+            }
         }
 
         void UpdateJumpState()
         {
-            jump = false;
             switch (jumpState)
             {
                 case JumpState.PrepareToJump:
                     jumpState = JumpState.Jumping;
                     jump = true;
                     stopJump = false;
+                    coyoteTimer = 0f;
                     break;
 
                 case JumpState.Jumping:
-                    if (!IsGrounded)
-                    {
-                        Schedule<PlayerJumped>().player = this;
+                    if (!_isGrounded)
                         jumpState = JumpState.InFlight;
-                    }
                     break;
 
                 case JumpState.InFlight:
-                    if (IsGrounded && velocity.y <= 0)
-                    {
-                        Schedule<PlayerLanded>().player = this;
-                        jumpState = JumpState.Landed;
-                    }
+                    // l'aterratge es resol a Update (flanc)
                     break;
 
                 case JumpState.Landed:
                     jumpState = JumpState.Grounded;
                     break;
+
+                case JumpState.Grounded:
+                    // idle
+                    break;
             }
-        }
-
-        protected override void ComputeVelocity()
-        {
-            if (jump && (IsGrounded || coyoteTimer > 0))
-            {
-                velocity.y = jumpTakeOffSpeed * model.jumpModifier;
-                jump = false;
-                coyoteTimer = 0;
-            }
-            else if (stopJump)
-            {
-                stopJump = false;
-                if (velocity.y > 0) velocity.y *= model.jumpDeceleration;
-            }
-
-            if (move.x > 0.01f) spriteRenderer.flipX = false;
-            else if (move.x < -0.01f) spriteRenderer.flipX = true;
-
-            animator.SetBool("grounded", IsGrounded);
-            animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
-
-            targetVelocity = move * maxSpeed;
         }
 
         public enum JumpState
@@ -155,6 +234,53 @@ namespace Platformer.Mechanics
             Jumping,
             InFlight,
             Landed
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            if (groundCheck)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+            }
+        }
+
+        // -----------------------------------------------------------
+        // COMPATIBILITAT AMB KinematicObject (Platformer Microgame)
+        // -----------------------------------------------------------
+
+        // Propietat 'velocity' que altres scripts llegeixen/escriuen
+        public Vector2 velocity
+        {
+            get => rb ? rb.linearVelocity : Vector2.zero;
+            set { if (rb) rb.linearVelocity = value; }
+        }
+
+        // Setter 'targetVelocity' (molts scripts l'usen per moure el player)
+        public Vector2 targetVelocity
+        {
+            set
+            {
+                if (rb)
+                    rb.linearVelocity = new Vector2(value.x, rb.linearVelocity.y);
+            }
+        }
+
+        // Rebot vertical (JumpPads, enemics, etc.)
+        public void Bounce(float amount)
+        {
+            if (!rb) return;
+            float vy = rb.linearVelocity.y;
+            if (vy < 0f) vy = 0f;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, vy);
+            rb.AddForce(Vector2.up * amount, ForceMode2D.Impulse);
+        }
+
+        // Teletransport (spawn / checkpoints)
+        public void Teleport(Vector3 position)
+        {
+            transform.position = position;
+            if (rb) rb.linearVelocity = Vector2.zero;
         }
     }
 }
