@@ -8568,6 +8568,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114230831923080080, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
         type: 3}
+      propertyPath: coyoteTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114230831923080080, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
+        type: 3}
       propertyPath: jumpButton
       value: Jump_P2
       objectReference: {fileID: 0}
@@ -8575,6 +8580,11 @@ PrefabInstance:
         type: 3}
       propertyPath: horizontalAxis
       value: Horizontal_P2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114230831923080080, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
+        type: 3}
+      propertyPath: jumpBufferTime
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7112250470477658570, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
         type: 3}
@@ -10383,6 +10393,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114230831923080080, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
         type: 3}
+      propertyPath: coyoteTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114230831923080080, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
+        type: 3}
       propertyPath: jumpButton
       value: Jump
       objectReference: {fileID: 0}
@@ -10390,6 +10405,11 @@ PrefabInstance:
         type: 3}
       propertyPath: horizontalAxis
       value: Horizontal
+      objectReference: {fileID: 0}
+    - target: {fileID: 114230831923080080, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
+        type: 3}
+      propertyPath: jumpBufferTime
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 212064061491315838, guid: 7d60c822c3f1b408ea7a00ecdb5e047a,
         type: 3}
