@@ -11,15 +11,40 @@ namespace Platformer.Mechanics
     [DisallowMultipleComponent]
     public class PlayerController : MonoBehaviour
     {
+        // ====== Inspector Key Bindings only (no legacy axes) ======
+        [System.Serializable]
+        public struct KeyPair
+        {
+            public KeyCode primary;
+            public KeyCode secondary;
+
+            public bool Held() => Input.GetKey(primary) || Input.GetKey(secondary);
+            public bool Down() => Input.GetKeyDown(primary) || Input.GetKeyDown(secondary);
+            public bool Up() => Input.GetKeyUp(primary) || Input.GetKeyUp(secondary);
+        }
+
+        [System.Serializable]
+        public class KeyBindings
+        {
+            [Header("Left / Right")]
+            public KeyPair left = new KeyPair { primary = KeyCode.A, secondary = KeyCode.LeftArrow };
+            public KeyPair right = new KeyPair { primary = KeyCode.D, secondary = KeyCode.RightArrow };
+            [Header("Jump")]
+            public KeyPair jump = new KeyPair { primary = KeyCode.Space, secondary = KeyCode.JoystickButton0 };
+        }
+
+        [Header("Keys (Inspector)")]
+        public KeyBindings keys = new KeyBindings();
+
         [Header("Identity / Audio")]
         public int playerId = 1;
         public AudioClip jumpAudio;
         public AudioClip respawnAudio;
         public AudioClip ouchAudio;
 
-        [Header("Movement (legacy names kept)")]
-        public float maxSpeed = 7f;              // horitzontal
-        public float jumpTakeOffSpeed = 7f;      // impuls vertical
+        [Header("Movement")]
+        public float maxSpeed = 7f;              // horizontal speed
+        public float jumpTakeOffSpeed = 7f;      // vertical impulse
 
         [Header("Animator / Components")]
         public Collider2D collider2d;
@@ -30,10 +55,6 @@ namespace Platformer.Mechanics
 
         [Header("Enable/Disable Control")]
         public bool controlEnabled = true;
-
-        [Header("Input (old Input Manager)")]
-        public string horizontalAxis = "Horizontal";
-        public string jumpButton = "Jump";
 
         [Header("Jump Forgiveness")]
         [Tooltip("Time you can still jump after leaving ground.")]
@@ -48,27 +69,25 @@ namespace Platformer.Mechanics
         public float groundCheckRadius = 0.2f;
         public float acceleration = 60f;
         public float deceleration = 60f;
-        [Tooltip("Retalla l'alçada si deixes el botó durant la pujada")]
+        [Tooltip("Cuts jump height if you release the button on the way up.")]
         public float jumpCutMultiplier = 0.5f;
 
-        // Estat de salt (manté el teu enum i flux)
+        // Jump state
         public JumpState jumpState = JumpState.Grounded;
 
-        // Interns
+        // Internals
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
         public Bounds Bounds => collider2d ? collider2d.bounds : new Bounds(transform.position, Vector3.one);
 
-        bool stopJump;            // en deixar anar el botó
-        bool jump;                // sol·licitud de salt
-        Vector2 move;             // entrada horitzontal
+        bool stopJump;            // when releasing jump
+        bool jump;                // queued jump
+        Vector2 move;             // horizontal input
 
         float coyoteTimer;
         float jumpBufferTimer;
 
         bool wasGrounded;
-        bool _isGrounded;         // estat actual de terra
-
-        // --- COMPAT: algunes lògiques poden llegir si estem a terra
+        bool _isGrounded;         // current grounded state
         public bool IsGrounded => _isGrounded;
 
         void Reset()
@@ -98,22 +117,27 @@ namespace Platformer.Mechanics
 
         void Update()
         {
-            // --- Ground check simple
+            // Ground check
             _isGrounded = (groundCheck && Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer));
 
             // Timers
             if (_isGrounded) coyoteTimer = coyoteTime; else coyoteTimer -= Time.deltaTime;
             jumpBufferTimer -= Time.deltaTime;
 
-            // Input
+            // -------- INPUT (KeyCodes only) --------
             if (controlEnabled)
             {
-                move.x = Input.GetAxis(horizontalAxis);
+                float horiz = 0f;
+                bool leftHeld = keys.left.Held();
+                bool rightHeld = keys.right.Held();
+                if (leftHeld && !rightHeld) horiz = -1f;
+                else if (rightHeld && !leftHeld) horiz = 1f;
+                move.x = horiz;
 
-                if (Input.GetButtonDown(jumpButton))
+                if (keys.jump.Down())
                     jumpBufferTimer = jumpBufferTime;
 
-                if (Input.GetButtonUp(jumpButton))
+                if (keys.jump.Up())
                 {
                     stopJump = true;
                     Schedule<PlayerStopJump>().player = this;
@@ -140,15 +164,15 @@ namespace Platformer.Mechanics
                 else if (move.x < -0.01f) spriteRenderer.flipX = true;
             }
 
-            // Animator (paràmetres originals)
+            // Animator
             if (animator)
             {
                 animator.SetBool("grounded", _isGrounded);
-                float vx = rb ? rb.linearVelocity.x : 0f;
+                float vx = rb ? rb.linearVelocity.x : 0f; // user's preference: linearVelocity
                 animator.SetFloat("velocityX", Mathf.Abs(vx) / Mathf.Max(0.01f, maxSpeed));
             }
 
-            // Event d’aterratge (equivalent Microgame)
+            // Landed event
             if (_isGrounded && !wasGrounded && (jumpState == JumpState.InFlight || jumpState == JumpState.Jumping))
             {
                 Schedule<PlayerLanded>().player = this;
@@ -161,30 +185,32 @@ namespace Platformer.Mechanics
         {
             if (!rb) return;
 
-            // Moviment horitzontal amb accel/decel
+            // Horizontal move with accel/decel
             float targetSpeed = move.x * maxSpeed;
             float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
             float newX = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
             rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
 
-            // Jump cut en deixar el botó
+            // Jump cut on release
             if (stopJump)
             {
                 stopJump = false;
                 if (rb.linearVelocity.y > 0f)
                 {
-                    // respecta model.jumpDeceleration
                     float cutFactor = Mathf.Clamp01(1f - jumpCutMultiplier);
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * model.jumpDeceleration * (cutFactor <= 0f ? 0.5f : cutFactor));
+                    rb.linearVelocity = new Vector2(
+                        rb.linearVelocity.x,
+                        rb.linearVelocity.y * model.jumpDeceleration * (cutFactor <= 0f ? 0.5f : cutFactor)
+                    );
                 }
             }
 
-            // Aplicació del salt
+            // Apply jump
             if (jump)
             {
                 jump = false;
 
-                // neteja caiguda per un salt net
+                // clear downward velocity for clean jump
                 float vy = rb.linearVelocity.y;
                 if (vy < 0f) vy = 0f;
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, vy);
@@ -192,7 +218,6 @@ namespace Platformer.Mechanics
                 float impulse = jumpTakeOffSpeed * Mathf.Max(0f, model.jumpModifier);
                 rb.AddForce(Vector2.up * impulse, ForceMode2D.Impulse);
 
-                // Event de salt (moment equiparable)
                 Schedule<PlayerJumped>().player = this;
             }
         }
@@ -214,7 +239,7 @@ namespace Platformer.Mechanics
                     break;
 
                 case JumpState.InFlight:
-                    // l'aterratge es resol a Update (flanc)
+                    // landing handled on Update() rising edge
                     break;
 
                 case JumpState.Landed:
@@ -245,18 +270,13 @@ namespace Platformer.Mechanics
             }
         }
 
-        // -----------------------------------------------------------
-        // COMPATIBILITAT AMB KinematicObject (Platformer Microgame)
-        // -----------------------------------------------------------
-
-        // Propietat 'velocity' que altres scripts llegeixen/escriuen
+        // -------- Compatibility helpers (kept for external scripts) --------
         public Vector2 velocity
         {
             get => rb ? rb.linearVelocity : Vector2.zero;
             set { if (rb) rb.linearVelocity = value; }
         }
 
-        // Setter 'targetVelocity' (molts scripts l'usen per moure el player)
         public Vector2 targetVelocity
         {
             set
@@ -266,7 +286,6 @@ namespace Platformer.Mechanics
             }
         }
 
-        // Rebot vertical (JumpPads, enemics, etc.)
         public void Bounce(float amount)
         {
             if (!rb) return;
@@ -276,7 +295,6 @@ namespace Platformer.Mechanics
             rb.AddForce(Vector2.up * amount, ForceMode2D.Impulse);
         }
 
-        // Teletransport (spawn / checkpoints)
         public void Teleport(Vector3 position)
         {
             transform.position = position;
