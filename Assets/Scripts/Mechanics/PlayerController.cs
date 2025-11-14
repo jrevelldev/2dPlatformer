@@ -168,9 +168,14 @@ namespace Platformer.Mechanics
             if (animator)
             {
                 animator.SetBool("grounded", _isGrounded);
-                float vx = rb ? rb.linearVelocity.x : 0f; // user's preference: linearVelocity
+
+                float vx = rb ? rb.linearVelocity.x : 0f;
+                float vy = rb ? rb.linearVelocity.y : 0f;
+
                 animator.SetFloat("velocityX", Mathf.Abs(vx) / Mathf.Max(0.01f, maxSpeed));
+                animator.SetFloat("velocityY", vy);   // <-- ADD THIS
             }
+
 
             // Landed event
             if (_isGrounded && !wasGrounded && (jumpState == JumpState.InFlight || jumpState == JumpState.Jumping))
