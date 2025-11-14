@@ -16,6 +16,9 @@ public class PlatformerJumpPad : MonoBehaviour
 
     void AddVelocity(PlayerController player)
     {
-        player.velocity.y = verticalVelocity;
+        Vector2 v = player.velocity;   // 1) copies el vector
+        v.y = verticalVelocity;        // 2) el modifiques
+        player.velocity = v;           // 3) el tornes a assignar
     }
+
 }
