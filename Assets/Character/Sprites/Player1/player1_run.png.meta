@@ -118,10 +118,10 @@ TextureImporter:
       name: player1_run_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 8
-        width: 48
-        height: 67
+        x: 0
+        y: 0
+        width: 86
+        height: 86
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,10 +140,10 @@ TextureImporter:
       name: player1_run_1
       rect:
         serializedVersion: 2
-        x: 110
-        y: 11
-        width: 45
-        height: 64
+        x: 86
+        y: 0
+        width: 86
+        height: 86
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,10 +162,10 @@ TextureImporter:
       name: player1_run_2
       rect:
         serializedVersion: 2
-        x: 187
-        y: 5
-        width: 47
-        height: 68
+        x: 172
+        y: 0
+        width: 86
+        height: 86
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,10 +184,10 @@ TextureImporter:
       name: player1_run_3
       rect:
         serializedVersion: 2
-        x: 277
-        y: 8
-        width: 49
-        height: 67
+        x: 258
+        y: 0
+        width: 86
+        height: 86
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,10 +206,10 @@ TextureImporter:
       name: player1_run_4
       rect:
         serializedVersion: 2
-        x: 362
-        y: 11
-        width: 55
-        height: 64
+        x: 344
+        y: 0
+        width: 86
+        height: 86
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,10 +228,10 @@ TextureImporter:
       name: player1_run_5
       rect:
         serializedVersion: 2
-        x: 448
-        y: 5
-        width: 45
-        height: 62
+        x: 430
+        y: 0
+        width: 86
+        height: 86
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,7 +250,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: bc4f7f7f2574d2a45b90f93be65db607
     internalID: 0
     vertices: []
     indices: 
@@ -258,7 +258,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":6.0,"y":1.0},"gridSpriteSize":{"x":86.0,"y":86.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       player1_run_0: -175349783579271364
       player1_run_1: -8487392842781501388
