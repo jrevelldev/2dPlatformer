@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ToggleSpriteRendererWithH : MonoBehaviour
 {
+    [SerializeField] private KeyCode toggleKey = KeyCode.H;
     private SpriteRenderer spriteRenderer;
 
     void Start()
@@ -11,7 +12,7 @@ public class ToggleSpriteRendererWithH : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H) && spriteRenderer != null)
+        if (Input.GetKeyDown(toggleKey) && spriteRenderer != null)
         {
             spriteRenderer.enabled = !spriteRenderer.enabled;
         }
