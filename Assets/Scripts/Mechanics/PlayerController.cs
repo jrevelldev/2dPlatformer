@@ -72,6 +72,18 @@ namespace Platformer.Mechanics
         [Tooltip("Cuts jump height if you release the button on the way up.")]
         public float jumpCutMultiplier = 0.5f;
 
+        // =======================
+        //     DUST PARTICLES
+        // =======================
+        [Header("Dust FX (optional)")]
+        [Tooltip("Looping dust at feet while running on the ground (Play On Awake OFF, Loop ON).")]
+        public ParticleSystem runDust;   // Looping
+        [Tooltip("One-shot burst when jumping (Play On Awake OFF, Loop OFF).")]
+        public ParticleSystem jumpDust;  // One shot
+        [Tooltip("One-shot burst when landing (Play On Awake OFF, Loop OFF).")]
+        public ParticleSystem landDust;  // One shot
+        // =======================
+
         // Jump state
         public JumpState jumpState = JumpState.Grounded;
 
@@ -79,15 +91,15 @@ namespace Platformer.Mechanics
         readonly PlatformerModel model = Simulation.GetModel<PlatformerModel>();
         public Bounds Bounds => collider2d ? collider2d.bounds : new Bounds(transform.position, Vector3.one);
 
-        bool stopJump;            // when releasing jump
-        bool jump;                // queued jump
-        Vector2 move;             // horizontal input
+        bool stopJump;           // when releasing jump
+        bool jump;               // queued jump to apply in FixedUpdate
+        Vector2 move;            // horizontal input
 
         float coyoteTimer;
         float jumpBufferTimer;
 
         bool wasGrounded;
-        bool _isGrounded;         // current grounded state
+        bool _isGrounded;
         public bool IsGrounded => _isGrounded;
 
         void Reset()
@@ -121,17 +133,21 @@ namespace Platformer.Mechanics
             _isGrounded = (groundCheck && Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer));
 
             // Timers
-            if (_isGrounded) coyoteTimer = coyoteTime; else coyoteTimer -= Time.deltaTime;
+            if (_isGrounded) coyoteTimer = coyoteTime;
+            else coyoteTimer -= Time.deltaTime;
+
             jumpBufferTimer -= Time.deltaTime;
 
-            // -------- INPUT (KeyCodes only) --------
+            // -------- INPUT --------
             if (controlEnabled)
             {
                 float horiz = 0f;
                 bool leftHeld = keys.left.Held();
                 bool rightHeld = keys.right.Held();
+
                 if (leftHeld && !rightHeld) horiz = -1f;
                 else if (rightHeld && !leftHeld) horiz = 1f;
+
                 move.x = horiz;
 
                 if (keys.jump.Down())
@@ -157,7 +173,7 @@ namespace Platformer.Mechanics
 
             UpdateJumpState();
 
-            // Flip
+            // Flip sprite
             if (spriteRenderer)
             {
                 if (move.x > 0.01f) spriteRenderer.flipX = false;
@@ -167,22 +183,27 @@ namespace Platformer.Mechanics
             // Animator
             if (animator)
             {
-                animator.SetBool("grounded", _isGrounded);
-
                 float vx = rb ? rb.linearVelocity.x : 0f;
                 float vy = rb ? rb.linearVelocity.y : 0f;
 
+                animator.SetBool("grounded", _isGrounded);
                 animator.SetFloat("velocityX", Mathf.Abs(vx) / Mathf.Max(0.01f, maxSpeed));
-                animator.SetFloat("velocityY", vy);   // <-- ADD THIS
+                animator.SetFloat("velocityY", vy);
             }
 
+            // Reliable dust handling
+            HandleRunDust();
 
-            // Landed event
-            if (_isGrounded && !wasGrounded && (jumpState == JumpState.InFlight || jumpState == JumpState.Jumping))
+            // Landing event
+            if (_isGrounded && !wasGrounded &&
+                (jumpState == JumpState.InFlight || jumpState == JumpState.Jumping))
             {
                 Schedule<PlayerLanded>().player = this;
                 jumpState = JumpState.Landed;
+
+                SpawnLandDust();
             }
+
             wasGrounded = _isGrounded;
         }
 
@@ -190,34 +211,42 @@ namespace Platformer.Mechanics
         {
             if (!rb) return;
 
-            // Horizontal move with accel/decel
+            // Horizontal move
             float targetSpeed = move.x * maxSpeed;
-            float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;
-            float newX = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
+            float accelRate = Mathf.Abs(targetSpeed) > 0.01f ? acceleration : deceleration;
+
+            float newX = Mathf.MoveTowards(
+                rb.linearVelocity.x,
+                targetSpeed,
+                accelRate * Time.fixedDeltaTime
+            );
+
             rb.linearVelocity = new Vector2(newX, rb.linearVelocity.y);
 
-            // Jump cut on release
+            // Jump cut
             if (stopJump)
             {
                 stopJump = false;
+
                 if (rb.linearVelocity.y > 0f)
                 {
                     float cutFactor = Mathf.Clamp01(1f - jumpCutMultiplier);
                     rb.linearVelocity = new Vector2(
                         rb.linearVelocity.x,
-                        rb.linearVelocity.y * model.jumpDeceleration * (cutFactor <= 0f ? 0.5f : cutFactor)
+                        rb.linearVelocity.y * model.jumpDeceleration *
+                        (cutFactor <= 0f ? 0.5f : cutFactor)
                     );
                 }
             }
 
-            // Apply jump
+            // Apply jump impulse
             if (jump)
             {
                 jump = false;
 
-                // clear downward velocity for clean jump
                 float vy = rb.linearVelocity.y;
                 if (vy < 0f) vy = 0f;
+
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, vy);
 
                 float impulse = jumpTakeOffSpeed * Mathf.Max(0f, model.jumpModifier);
@@ -232,10 +261,14 @@ namespace Platformer.Mechanics
             switch (jumpState)
             {
                 case JumpState.PrepareToJump:
+                    // Transition into actual jump
                     jumpState = JumpState.Jumping;
                     jump = true;
                     stopJump = false;
                     coyoteTimer = 0f;
+
+                    // << Play jump dust exactly when jump starts >>
+                    SpawnJumpDust();
                     break;
 
                 case JumpState.Jumping:
@@ -244,7 +277,7 @@ namespace Platformer.Mechanics
                     break;
 
                 case JumpState.InFlight:
-                    // landing handled on Update() rising edge
+                    // landing handled in Update()
                     break;
 
                 case JumpState.Landed:
@@ -275,7 +308,7 @@ namespace Platformer.Mechanics
             }
         }
 
-        // -------- Compatibility helpers (kept for external scripts) --------
+        // -------- Compatibility helpers --------
         public Vector2 velocity
         {
             get => rb ? rb.linearVelocity : Vector2.zero;
@@ -304,6 +337,40 @@ namespace Platformer.Mechanics
         {
             transform.position = position;
             if (rb) rb.linearVelocity = Vector2.zero;
+        }
+
+        // ======================
+        //   DUST FX HELPERS
+        // ======================
+        void HandleRunDust()
+        {
+            if (!runDust || !rb) return;
+
+            float speed = Mathf.Abs(rb.linearVelocity.x);
+            bool shouldPlay = _isGrounded && speed > 0.1f;
+
+            if (shouldPlay)
+            {
+                if (!runDust.isEmitting)
+                    runDust.Play();
+            }
+            else
+            {
+                if (runDust.isEmitting)
+                    runDust.Stop();
+            }
+        }
+
+        void SpawnJumpDust()
+        {
+            if (jumpDust)
+                jumpDust.Play();
+        }
+
+        void SpawnLandDust()
+        {
+            if (landDust)
+                landDust.Play();
         }
     }
 }
