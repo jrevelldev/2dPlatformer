@@ -42,7 +42,7 @@ public class ScoreboardHUD : MonoBehaviour
         // playerId expected 1..4
         int idx = playerId - 1;
         if (idx < 0 || idx >= labels.Length) return;
-        if (labels[idx] != null) labels[idx].text = $"P{playerId}: {newScore}";
+        if (labels[idx] != null) labels[idx].text = $"{newScore}";
     }
 
     public void RefreshAll()
@@ -52,7 +52,7 @@ public class ScoreboardHUD : MonoBehaviour
         {
             int pid = i + 1;
             if (labels[i] != null)
-                labels[i].text = $"P{pid}: {ScoreManager.Instance.GetScore(pid)}";
+                labels[i].text = $"{ScoreManager.Instance.GetScore(pid)}";
         }
     }
 }
