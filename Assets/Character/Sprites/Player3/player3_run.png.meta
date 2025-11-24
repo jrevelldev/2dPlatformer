@@ -1,31 +1,25 @@
 fileFormatVersion: 2
-guid: 62b372d9679c0e5498315fd64298de6d
+guid: 082425533200d5842b789ad389e6bcb4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -342290789922433507
-    second: melcior_run_0
+      213: -2436271723835119960
+    second: Player_rei3_run_sp_0
   - first:
-      213: -3859183469561568642
-    second: melcior_run_1
+      213: 1187682658461304178
+    second: Player_rei3_run_sp_1
   - first:
-      213: 1274709371524215403
-    second: melcior_run_2
+      213: 8843183328556952583
+    second: Player_rei3_run_sp_2
   - first:
-      213: -5301032429018340608
-    second: melcior_run_3
+      213: -5580061442078517897
+    second: Player_rei3_run_sp_3
   - first:
-      213: -1104561810910142440
-    second: melcior_run_4
+      213: -1517254090910817780
+    second: Player_rei3_run_sp_4
   - first:
-      213: 7629773946952687808
-    second: melcior_run_5
-  - first:
-      213: -2187962020885060960
-    second: melcior_run_6
-  - first:
-      213: -6044363188758275657
-    second: melcior_run_7
+      213: 7799684070911393204
+    second: Player_rei3_run_sp_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,7 +90,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -160,101 +154,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: melcior_run_0
+      name: Player_rei3_run_sp_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 74
-        width: 45
-        height: 54
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d1619c01750ff3bf0800000000000000
-      internalID: -342290789922433507
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: melcior_run_1
-      rect:
-        serializedVersion: 2
-        x: 72
-        y: 70
-        width: 49
-        height: 57
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e7229bdc41d617ac0800000000000000
-      internalID: -3859183469561568642
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: melcior_run_2
-      rect:
-        serializedVersion: 2
-        x: 138
-        y: 70
-        width: 47
-        height: 55
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b62ff817b6da0b110800000000000000
-      internalID: 1274709371524215403
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: melcior_run_3
-      rect:
-        serializedVersion: 2
-        x: 205
-        y: 70
-        width: 41
-        height: 57
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 00329858713fe66b0800000000000000
-      internalID: -5301032429018340608
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: melcior_run_4
-      rect:
-        serializedVersion: 2
-        x: 7
-        y: 7
+        x: 18
+        y: 8
         width: 48
-        height: 57
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -263,19 +169,85 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8102d3c92eecba0f0800000000000000
-      internalID: -1104561810910142440
+      spriteID: 8a6aa7c66cf903ed0800000000000000
+      internalID: -2436271723835119960
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: melcior_run_5
+      name: Player_rei3_run_sp_1
       rect:
         serializedVersion: 2
-        x: 73
-        y: 3
+        x: 110
+        y: 11
+        width: 45
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2754a73d51f7b7010800000000000000
+      internalID: 1187682658461304178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_rei3_run_sp_2
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 5
+        width: 48
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70c2b46526c49ba70800000000000000
+      internalID: 8843183328556952583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_rei3_run_sp_3
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 8
         width: 49
+        height: 62
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7755e00dea3af82b0800000000000000
+      internalID: -5580061442078517897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_rei3_run_sp_4
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 11
+        width: 55
         height: 59
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -285,42 +257,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0c025a00bf662e960800000000000000
-      internalID: 7629773946952687808
+      spriteID: c02a04d6171a1fae0800000000000000
+      internalID: -1517254090910817780
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: melcior_run_6
+      name: Player_rei3_run_sp_5
       rect:
         serializedVersion: 2
-        x: 143
-        y: 4
-        width: 41
-        height: 55
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0a2a913622cc2a1e0800000000000000
-      internalID: -2187962020885060960
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: melcior_run_7
-      rect:
-        serializedVersion: 2
-        x: 208
-        y: 4
+        x: 448
+        y: 5
         width: 46
-        height: 58
+        height: 57
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -329,8 +279,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7b99d9844bb1e1ca0800000000000000
-      internalID: -6044363188758275657
+      spriteID: 4bd32f6865b0e3c60800000000000000
+      internalID: 7799684070911393204
       vertices: []
       indices: 
       edges: []
@@ -349,14 +299,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      melcior_run_0: -342290789922433507
-      melcior_run_1: -3859183469561568642
-      melcior_run_2: 1274709371524215403
-      melcior_run_3: -5301032429018340608
-      melcior_run_4: -1104561810910142440
-      melcior_run_5: 7629773946952687808
-      melcior_run_6: -2187962020885060960
-      melcior_run_7: -6044363188758275657
+      Player_rei3_run_sp_0: -2436271723835119960
+      Player_rei3_run_sp_1: 1187682658461304178
+      Player_rei3_run_sp_2: 8843183328556952583
+      Player_rei3_run_sp_3: -5580061442078517897
+      Player_rei3_run_sp_4: -1517254090910817780
+      Player_rei3_run_sp_5: 7799684070911393204
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
