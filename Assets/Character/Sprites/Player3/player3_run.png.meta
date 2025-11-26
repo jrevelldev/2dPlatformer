@@ -1,34 +1,25 @@
 fileFormatVersion: 2
-guid: 700e22e6da10d7a4fa718f2f95f9fd21
+guid: 082425533200d5842b789ad389e6bcb4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 701804405629523170
-    second: player1_idle_0
+      213: -2436271723835119960
+    second: Player_rei3_run_sp_0
   - first:
-      213: 3925138334922918013
-    second: player1_idle_1
+      213: 1187682658461304178
+    second: Player_rei3_run_sp_1
   - first:
-      213: 2358148765893468524
-    second: player1_idle_2
+      213: 8843183328556952583
+    second: Player_rei3_run_sp_2
   - first:
-      213: -2966369215702510731
-    second: player1_idle_3
+      213: -5580061442078517897
+    second: Player_rei3_run_sp_3
   - first:
-      213: 2110012478488114977
-    second: player1_idle_4
+      213: -1517254090910817780
+    second: Player_rei3_run_sp_4
   - first:
-      213: -2578309680867152138
-    second: player1_idle_5
-  - first:
-      213: 4990304321274804858
-    second: player1_idle_6
-  - first:
-      213: -7182216860439871346
-    second: player1_idle_7
-  - first:
-      213: -1613267851821181226
-    second: player1_idle_8
+      213: 7799684070911393204
+    second: Player_rei3_run_sp_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -120,17 +111,56 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player1_idle_0
+      name: Player_rei3_run_sp_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 86
-        height: 86
+        x: 18
+        y: 8
+        width: 48
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,20 +169,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2e41a5b736f4db900800000000000000
-      internalID: 701804405629523170
+      spriteID: 8a6aa7c66cf903ed0800000000000000
+      internalID: -2436271723835119960
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_1
+      name: Player_rei3_run_sp_1
       rect:
         serializedVersion: 2
-        x: 86
-        y: 0
-        width: 86
-        height: 86
+        x: 110
+        y: 11
+        width: 45
+        height: 60
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,20 +191,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d784953f484e87630800000000000000
-      internalID: 3925138334922918013
+      spriteID: 2754a73d51f7b7010800000000000000
+      internalID: 1187682658461304178
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_2
+      name: Player_rei3_run_sp_2
       rect:
         serializedVersion: 2
-        x: 172
-        y: 0
-        width: 86
-        height: 86
+        x: 187
+        y: 5
+        width: 48
+        height: 63
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,20 +213,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c612b9efec3d9b020800000000000000
-      internalID: 2358148765893468524
+      spriteID: 70c2b46526c49ba70800000000000000
+      internalID: 8843183328556952583
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_3
+      name: Player_rei3_run_sp_3
       rect:
         serializedVersion: 2
-        x: 258
-        y: 0
-        width: 86
-        height: 86
+        x: 277
+        y: 8
+        width: 49
+        height: 62
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,20 +235,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 573d5613ae655d6d0800000000000000
-      internalID: -2966369215702510731
+      spriteID: 7755e00dea3af82b0800000000000000
+      internalID: -5580061442078517897
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_4
+      name: Player_rei3_run_sp_4
       rect:
         serializedVersion: 2
-        x: 344
-        y: 0
-        width: 86
-        height: 86
+        x: 362
+        y: 11
+        width: 55
+        height: 59
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -227,20 +257,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 127fceb7b25484d10800000000000000
-      internalID: 2110012478488114977
+      spriteID: c02a04d6171a1fae0800000000000000
+      internalID: -1517254090910817780
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_5
+      name: Player_rei3_run_sp_5
       rect:
         serializedVersion: 2
-        x: 430
-        y: 0
-        width: 86
-        height: 86
+        x: 448
+        y: 5
+        width: 46
+        height: 57
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -249,74 +279,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6fe66f67101083cd0800000000000000
-      internalID: -2578309680867152138
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player1_idle_6
-      rect:
-        serializedVersion: 2
-        x: 516
-        y: 0
-        width: 86
-        height: 86
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a7a7ea6275f114540800000000000000
-      internalID: 4990304321274804858
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player1_idle_7
-      rect:
-        serializedVersion: 2
-        x: 602
-        y: 0
-        width: 86
-        height: 86
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e8009a581d3a35c90800000000000000
-      internalID: -7182216860439871346
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player1_idle_8
-      rect:
-        serializedVersion: 2
-        x: 688
-        y: 0
-        width: 86
-        height: 86
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6d614acaf658c99e0800000000000000
-      internalID: -1613267851821181226
+      spriteID: 4bd32f6865b0e3c60800000000000000
+      internalID: 7799684070911393204
       vertices: []
       indices: 
       edges: []
@@ -325,7 +289,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: a05807a05146daf4c8199bcdb1cebff0
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -333,19 +297,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries:
-      - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":9.0,"y":1.0},"gridSpriteSize":{"x":86.0,"y":86.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+      entries: []
     nameFileIdTable:
-      player1_idle_0: 701804405629523170
-      player1_idle_1: 3925138334922918013
-      player1_idle_2: 2358148765893468524
-      player1_idle_3: -2966369215702510731
-      player1_idle_4: 2110012478488114977
-      player1_idle_5: -2578309680867152138
-      player1_idle_6: 4990304321274804858
-      player1_idle_7: -7182216860439871346
-      player1_idle_8: -1613267851821181226
+      Player_rei3_run_sp_0: -2436271723835119960
+      Player_rei3_run_sp_1: 1187682658461304178
+      Player_rei3_run_sp_2: 8843183328556952583
+      Player_rei3_run_sp_3: -5580061442078517897
+      Player_rei3_run_sp_4: -1517254090910817780
+      Player_rei3_run_sp_5: 7799684070911393204
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,34 +1,34 @@
 fileFormatVersion: 2
-guid: 700e22e6da10d7a4fa718f2f95f9fd21
+guid: efe0d282044915e45828658a96378b43
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 701804405629523170
-    second: player1_idle_0
+      213: 2549511824249855348
+    second: Player_rei2_idle_sp_0
   - first:
-      213: 3925138334922918013
-    second: player1_idle_1
+      213: 1119055112963312674
+    second: Player_rei2_idle_sp_1
   - first:
-      213: 2358148765893468524
-    second: player1_idle_2
+      213: -8719854808842284917
+    second: Player_rei2_idle_sp_2
   - first:
-      213: -2966369215702510731
-    second: player1_idle_3
+      213: -2126708291248272492
+    second: Player_rei2_idle_sp_3
   - first:
-      213: 2110012478488114977
-    second: player1_idle_4
+      213: 8945928098323465513
+    second: Player_rei2_idle_sp_4
   - first:
-      213: -2578309680867152138
-    second: player1_idle_5
+      213: -6362877854256731909
+    second: Player_rei2_idle_sp_5
   - first:
-      213: 4990304321274804858
-    second: player1_idle_6
+      213: 1713399664514516044
+    second: Player_rei2_idle_sp_6
   - first:
-      213: -7182216860439871346
-    second: player1_idle_7
+      213: -4429643246822753877
+    second: Player_rei2_idle_sp_7
   - first:
-      213: -1613267851821181226
-    second: player1_idle_8
+      213: -4974116785650165853
+    second: Player_rei2_idle_sp_8
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -120,11 +120,50 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player1_idle_0
+      name: player2_idle_0
       rect:
         serializedVersion: 2
         x: 0
@@ -137,16 +176,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2e41a5b736f4db900800000000000000
-      internalID: 701804405629523170
+      spriteID: c063fb401cca2cc48900f48d0f3e4144
+      internalID: 2114045533
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_1
+      name: player2_idle_1
       rect:
         serializedVersion: 2
         x: 86
@@ -159,16 +198,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: d784953f484e87630800000000000000
-      internalID: 3925138334922918013
+      spriteID: c190c4aa93468aa4a95ab95f1c659543
+      internalID: -558970738
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_2
+      name: player2_idle_2
       rect:
         serializedVersion: 2
         x: 172
@@ -181,16 +220,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c612b9efec3d9b020800000000000000
-      internalID: 2358148765893468524
+      spriteID: 58708f9af30a0da4d8d4995a31a6c93c
+      internalID: -338348164
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_3
+      name: player2_idle_3
       rect:
         serializedVersion: 2
         x: 258
@@ -203,16 +242,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 573d5613ae655d6d0800000000000000
-      internalID: -2966369215702510731
+      spriteID: aae7cffc803189e43be0cb2168fc547f
+      internalID: -1582534949
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_4
+      name: player2_idle_4
       rect:
         serializedVersion: 2
         x: 344
@@ -225,16 +264,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 127fceb7b25484d10800000000000000
-      internalID: 2110012478488114977
+      spriteID: 01ff94edddf840f4cbf6a51666b6ce18
+      internalID: -1766782601
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_5
+      name: player2_idle_5
       rect:
         serializedVersion: 2
         x: 430
@@ -247,16 +286,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6fe66f67101083cd0800000000000000
-      internalID: -2578309680867152138
+      spriteID: 1541afa35c746b24ba294deb185eb72a
+      internalID: -2004705610
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_6
+      name: player2_idle_6
       rect:
         serializedVersion: 2
         x: 516
@@ -269,16 +308,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a7a7ea6275f114540800000000000000
-      internalID: 4990304321274804858
+      spriteID: f3fc776cee29e94428df415fa201daad
+      internalID: -1784092459
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_7
+      name: player2_idle_7
       rect:
         serializedVersion: 2
         x: 602
@@ -291,16 +330,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: e8009a581d3a35c90800000000000000
-      internalID: -7182216860439871346
+      spriteID: 218f46f85fbf60a4ea0f273dac7b88ed
+      internalID: -135882029
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_idle_8
+      name: player2_idle_8
       rect:
         serializedVersion: 2
         x: 688
@@ -313,10 +352,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6d614acaf658c99e0800000000000000
-      internalID: -1613267851821181226
+      spriteID: 179d54e0403b59a42b85c843bb2ef2b3
+      internalID: -1428005168
       vertices: []
       indices: 
       edges: []
@@ -325,7 +364,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: a05807a05146daf4c8199bcdb1cebff0
+    spriteID: da8afede0f36feb418827bff59ee6ece
     internalID: 0
     vertices: []
     indices: 
@@ -337,15 +376,15 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":9.0,"y":1.0},"gridSpriteSize":{"x":86.0,"y":86.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      player1_idle_0: 701804405629523170
-      player1_idle_1: 3925138334922918013
-      player1_idle_2: 2358148765893468524
-      player1_idle_3: -2966369215702510731
-      player1_idle_4: 2110012478488114977
-      player1_idle_5: -2578309680867152138
-      player1_idle_6: 4990304321274804858
-      player1_idle_7: -7182216860439871346
-      player1_idle_8: -1613267851821181226
+      player2_idle_0: 2114045533
+      player2_idle_1: -558970738
+      player2_idle_2: -338348164
+      player2_idle_3: -1582534949
+      player2_idle_4: -1766782601
+      player2_idle_5: -2004705610
+      player2_idle_6: -1784092459
+      player2_idle_7: -135882029
+      player2_idle_8: -1428005168
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,13 +1,19 @@
 fileFormatVersion: 2
-guid: 66993a5e20879f145ac02c218161f9f8
+guid: 07fb5a77c7d4a434da4844152f13da5f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1397983787276564597
-    second: player1_land_0
+      213: -6987466348685144041
+    second: playe4_idle_0
   - first:
-      213: -8515168778282222867
-    second: player1_land_1
+      213: 2292900317062249638
+    second: playe4_idle_1
+  - first:
+      213: 2755735316120700735
+    second: playe4_idle_2
+  - first:
+      213: -6259761078794897817
+    second: playe4_idle_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -54,7 +60,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 205
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -99,17 +105,56 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player1_land_0
+      name: playe4_idle_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 86
-        height: 86
+        y: 172
+        width: 172
+        height: 172
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,20 +163,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 578ff5209d2a66310800000000000000
-      internalID: 1397983787276564597
+      spriteID: 71050a68068870f90800000000000000
+      internalID: -6987466348685144041
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player1_land_1
+      name: playe4_idle_1
       rect:
         serializedVersion: 2
-        x: 86
-        y: 0
-        width: 86
-        height: 86
+        x: 172
+        y: 172
+        width: 172
+        height: 172
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,8 +185,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: deabdf78c1b04d980800000000000000
-      internalID: -8515168778282222867
+      spriteID: 6ac30e7a0b402df10800000000000000
+      internalID: 2292900317062249638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playe4_idle_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 172
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f378f546ba65e3620800000000000000
+      internalID: 2755735316120700735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: playe4_idle_3
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 0
+        width: 172
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7663d97e67cd029a0800000000000000
+      internalID: -6259761078794897817
       vertices: []
       indices: 
       edges: []
@@ -150,7 +239,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7767e1cae81e46749b64bd8eaf60cc29
+    spriteID: 51ea5c15ffbe1b0449dc8b08938afd0d
     internalID: 0
     vertices: []
     indices: 
@@ -160,10 +249,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":1.0},"gridSpriteSize":{"x":86.0,"y":86.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":2.0},"gridSpriteSize":{"x":172.0,"y":172.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      player1_land_0: 1397983787276564597
-      player1_land_1: -8515168778282222867
+      playe4_idle_0: -6987466348685144041
+      playe4_idle_1: 2292900317062249638
+      playe4_idle_2: 2755735316120700735
+      playe4_idle_3: -6259761078794897817
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
