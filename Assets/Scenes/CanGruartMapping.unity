@@ -17249,9 +17249,9 @@ Camera:
   m_LensShift: {x: 0, y: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.036417324
     y: 0
-    width: 1
+    width: 0.9273841
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
@@ -21456,20 +21456,14 @@ MonoBehaviour:
   - {fileID: 12242103}
   - {fileID: 835907170}
   - {fileID: 1906487005}
-  movementScriptTypeName: PlayerController
-  roundDurationSeconds: 60
+  movementScriptTypeName: Player Controller
+  roundDurationSeconds: 10
   autoStart: 1
   timeText: {fileID: 61438615}
   setupPanel: {fileID: 0}
   resultsPanel: {fileID: 1067425565}
   resultsText: {fileID: 1605378458}
   durationInput: {fileID: 0}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 1
-  groundProbeDistance: 0.015
-  groundWaitTimeout: 3
-  groundSettleDelay: 1
   logDebug: 1
 --- !u!4 &693195206
 Transform:
