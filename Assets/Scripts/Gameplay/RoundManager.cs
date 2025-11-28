@@ -25,6 +25,10 @@ public class RoundManager : MonoBehaviour
     public int roundDurationSeconds = 60;
     public bool autoStart = true;
 
+    [Header("Timer Display")]
+    [Tooltip("If true, show remaining time as total seconds (e.g. 120). If false, show MM:SS (e.g. 02:00).")]
+    public bool showAsTotalSeconds = false;
+
     [Header("UI")]
     public TMP_Text timeText;
     public GameObject setupPanel;
@@ -175,10 +179,20 @@ public class RoundManager : MonoBehaviour
         if (timeText == null) return;
 
         int s = Mathf.FloorToInt(seconds);
-        int m = s / 60;
-        int r = s % 60;
+        if (s < 0) s = 0;
 
-        timeText.text = $"{m:00}:{r:00}";
+        if (showAsTotalSeconds)
+        {
+            // Example: 120, 59, 0...
+            timeText.text = s.ToString();
+        }
+        else
+        {
+            // Example: 02:00, 00:59, 00:00...
+            int m = s / 60;
+            int r = s % 60;
+            timeText.text = $"{m:00}:{r:00}";
+        }
     }
 
     string BuildResultsText(List<GameObject> winners, int best)
