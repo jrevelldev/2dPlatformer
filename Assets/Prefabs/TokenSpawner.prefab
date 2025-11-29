@@ -103,8 +103,9 @@ MonoBehaviour:
   tokenPrefab: {fileID: 9132261287593132149, guid: 9177f15cbe53fac45a72afd812dec2f1,
     type: 3}
   spawnPoint: {fileID: 0}
-  respawnDelay: 5
+  initialSpawnDelay: 0
   spawnOnStart: 1
+  respawnDelay: 5
   reuseInstance: 1
   playAppearOnSpawn: 0
   appearUsesReverseOfCollected: 1

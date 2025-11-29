@@ -1,5 +1,6 @@
 ﻿// RoundManager.cs
 // Simple version: disables PlayerController + stops x-velocity when time hits 0.
+// Now also: pulls scores from ScoreManager and shows a Winner sprite + results text.
 
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,10 @@ public class RoundManager : MonoBehaviour
     public TMP_Text resultsText;
     public TMP_InputField durationInput;
 
+    [Header("Winner Display")]
+    [Tooltip("Reference to the WinnerDisplay object that shows the winner sprite + text.")]
+    public WinnerDisplay winnerDisplay;
+
     [Header("Debug")]
     public bool logDebug = false;
 
@@ -43,6 +48,8 @@ public class RoundManager : MonoBehaviour
     RoundState state = RoundState.Idle;
 
     float timeLeft;
+
+    // Local scores, synced from ScoreManager at EndRound
     readonly Dictionary<GameObject, int> scores = new Dictionary<GameObject, int>();
 
     // Reset singleton before scene loads
@@ -69,6 +76,10 @@ public class RoundManager : MonoBehaviour
 
         if (setupPanel != null) setupPanel.SetActive(false);
         if (resultsPanel != null) resultsPanel.SetActive(false);
+
+        // Make sure winner is hidden on start
+        if (winnerDisplay != null)
+            winnerDisplay.Hide();
     }
 
     void Start()
@@ -114,7 +125,7 @@ public class RoundManager : MonoBehaviour
         if (ScoreManager.Instance != null)
             ScoreManager.Instance.UnlockScores();
 
-        // Reset local scores (for the results display in this manager)
+        // Reset local scores for this round (they will be refilled from ScoreManager at EndRound)
         foreach (var k in new List<GameObject>(scores.Keys))
             scores[k] = 0;
 
@@ -123,6 +134,10 @@ public class RoundManager : MonoBehaviour
 
         if (setupPanel != null) setupPanel.SetActive(false);
         if (resultsPanel != null) resultsPanel.SetActive(false);
+
+        // Hide previous winner graphic (if any)
+        if (winnerDisplay != null)
+            winnerDisplay.Hide();
 
         SetPlayerControllersEnabled(true);
 
@@ -142,24 +157,72 @@ public class RoundManager : MonoBehaviour
         // Disable PlayerController + stop horizontal movement
         SetPlayerControllersEnabled(false);
 
-        // ----- Winner (optional) -----
+        // ----- Determine winner using ScoreManager -----
         int best = int.MinValue;
         List<GameObject> winners = new List<GameObject>();
 
-        foreach (var kv in scores)
+        scores.Clear(); // we'll refill it from ScoreManager
+
+        if (ScoreManager.Instance != null)
         {
-            if (kv.Value > best)
+            foreach (var p in players)
             {
-                best = kv.Value;
-                winners.Clear();
-                winners.Add(kv.Key);
+                if (p == null) continue;
+
+                var pc = p.GetComponentInChildren<PlayerController>(true);
+                if (pc == null) continue;
+
+                // Get the real score from ScoreManager using playerId
+                int sc = ScoreManager.Instance.GetScore(pc.playerId);
+                scores[p] = sc;
+
+                if (sc > best)
+                {
+                    best = sc;
+                    winners.Clear();
+                    winners.Add(p);
+                }
+                else if (sc == best)
+                {
+                    winners.Add(p);
+                }
             }
-            else if (kv.Value == best)
+        }
+        else
+        {
+            // Fallback: use whatever is in local scores
+            foreach (var kv in scores)
             {
-                winners.Add(kv.Key);
+                if (kv.Value > best)
+                {
+                    best = kv.Value;
+                    winners.Clear();
+                    winners.Add(kv.Key);
+                }
+                else if (kv.Value == best)
+                {
+                    winners.Add(kv.Key);
+                }
             }
         }
 
+        // ----- Show winner sprite + custom text -----
+        if (winnerDisplay != null && winners.Count > 0)
+        {
+            // For now, if there is a tie, we just show the first winner's sprite.
+            var winningGO = winners[0];
+            var pc = winningGO.GetComponentInChildren<PlayerController>(true);
+            if (pc != null)
+            {
+                winnerDisplay.ShowWinner(pc.playerId);
+            }
+            else
+            {
+                Debug.LogWarning("RoundManager: Winner has no PlayerController with playerId.", winningGO);
+            }
+        }
+
+        // ----- Results UI -----
         if (resultsPanel != null) resultsPanel.SetActive(true);
         if (resultsText != null) resultsText.text = BuildResultsText(winners, best);
 
@@ -177,6 +240,10 @@ public class RoundManager : MonoBehaviour
         UpdateTimerUI(timeLeft);
 
         SetPlayerControllersEnabled(true);
+
+        // Hide winner when going back to setup
+        if (winnerDisplay != null)
+            winnerDisplay.Hide();
     }
 
     // ===== UI =====
@@ -247,8 +314,8 @@ public class RoundManager : MonoBehaviour
             if (pc != null)
                 pc.enabled = enabled;
 
-            // Optional: Input System
 #if ENABLE_INPUT_SYSTEM
+            // Optional: Input System
             var pi = p.GetComponentInChildren<PlayerInput>(true);
             if (pi != null)
                 pi.enabled = enabled;
