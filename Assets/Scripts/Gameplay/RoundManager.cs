@@ -110,7 +110,11 @@ public class RoundManager : MonoBehaviour
             return;
         }
 
-        // Reset scores
+        // ✅ Allow score changes at the start of the round
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.UnlockScores();
+
+        // Reset local scores (for the results display in this manager)
         foreach (var k in new List<GameObject>(scores.Keys))
             scores[k] = 0;
 
@@ -131,7 +135,10 @@ public class RoundManager : MonoBehaviour
         if (state != RoundState.Playing) return;
         state = RoundState.Finished;
 
-        // 🔥 KEY BEHAVIOR:
+        // 🚫 Stop any further score changes in ScoreManager
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.LockScores();
+
         // Disable PlayerController + stop horizontal movement
         SetPlayerControllersEnabled(false);
 
