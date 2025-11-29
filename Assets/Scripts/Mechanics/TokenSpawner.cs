@@ -25,9 +25,12 @@ namespace Platformer.Mechanics
         public SimpleToken tokenPrefab;
         public Transform spawnPoint;                  // optional; if null, uses this object's transform
 
+        [Header("Initial Spawn")]
+        [Min(0f)] public float initialSpawnDelay = 0f; // delay before first spawn
+        public bool spawnOnStart = true;              // moved here so it's part of initial behaviour
+
         [Header("Respawn")]
         [Min(0f)] public float respawnDelay = 5f;
-        public bool spawnOnStart = true;
         public bool reuseInstance = true;             // re-enable same token vs. Instantiate new
 
         [Header("Appear Animation (optional)")]
@@ -57,8 +60,19 @@ namespace Platformer.Mechanics
                 return;
             }
 
-            if (spawnOnStart) SpawnNow();
+            if (spawnOnStart)
+                StartCoroutine(SpawnWithInitialDelay());
+
             UpdatePreview();
+        }
+
+        // Wait for the initial delay (if any), then spawn the token.
+        IEnumerator SpawnWithInitialDelay()
+        {
+            if (initialSpawnDelay > 0f)
+                yield return new WaitForSeconds(initialSpawnDelay);
+
+            SpawnNow();
         }
 
         void OnEnable()
