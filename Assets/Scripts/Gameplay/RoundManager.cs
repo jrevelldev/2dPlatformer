@@ -1,56 +1,45 @@
-﻿// RoundManager.cs (TMP edition: fall-until-ground, then freeze)
-// This version ALWAYS auto-starts a new round on scene load/reload.
+﻿// RoundManager.cs
+// Simple version: disables PlayerController + stops x-velocity when time hits 0.
+// Now also: pulls scores from ScoreManager and shows a Winner sprite + results text.
 
 using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UI;   // still needed for Button, Panels, etc.
-using TMPro;           // << TextMesh Pro
+using TMPro;
 
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
+
+using Platformer.Mechanics; // <-- required for PlayerController
 
 public class RoundManager : MonoBehaviour
 {
     public static RoundManager Instance { get; private set; }
 
     [Header("Players & Scoring")]
-    [Tooltip("Top-level GameObject of each player.")]
+    [Tooltip("Top-level GameObject of each player (e.g. Player1, Player2...).")]
     public List<GameObject> players = new List<GameObject>();
 
-    [Tooltip("Optional: exact class name of your movement script to toggle (e.g., 'PlayerController'). Leave empty to skip.")]
-    public string movementScriptTypeName = "";
-
     [Header("Round Setup")]
-    [Tooltip("Round duration (seconds).")]
     public int roundDurationSeconds = 60;
-
-    [Tooltip("Start automatically on Play (kept for inspector compatibility; ignored by this build).")]
     public bool autoStart = true;
 
-    [Header("Simple UI (TMP)")]
-    public TMP_Text timeText;               // << TMP
+    [Header("Timer Display")]
+    [Tooltip("If true, show remaining time as total seconds (e.g. 120). If false, show MM:SS (e.g. 02:00).")]
+    public bool showAsTotalSeconds = false;
+
+    [Header("UI")]
+    public TMP_Text timeText;
     public GameObject setupPanel;
     public GameObject resultsPanel;
-    public TMP_Text resultsText;            // << TMP
+    public TMP_Text resultsText;
+    public TMP_InputField durationInput;
 
-    [Tooltip("Optional: assign this, then hook the Start button to BeginRoundFromUI_NoParam()")]
-    public TMP_InputField durationInput;    // << TMP (optional convenience field)
-
-    [Header("Grounding Settings")]
-    [Tooltip("Layers that count as 'ground'.")]
-    public LayerMask groundMask;
-
-    [Tooltip("Distance below the collider bottom we probe to detect ground.")]
-    public float groundProbeDistance = 0.015f;
-
-    [Tooltip("Maximum time we wait for a player to touch ground after time-up (seconds).")]
-    public float groundWaitTimeout = 3f;
-
-    [Tooltip("Small delay after ground contact before hard-freezing (seconds).")]
-    public float groundSettleDelay = 1f;
+    [Header("Winner Display")]
+    [Tooltip("Reference to the WinnerDisplay object that shows the winner sprite + text.")]
+    public WinnerDisplay winnerDisplay;
 
     [Header("Debug")]
     public bool logDebug = false;
@@ -59,9 +48,11 @@ public class RoundManager : MonoBehaviour
     RoundState state = RoundState.Idle;
 
     float timeLeft;
+
+    // Local scores, synced from ScoreManager at EndRound
     readonly Dictionary<GameObject, int> scores = new Dictionary<GameObject, int>();
 
-    // --- This runs before any scene starts, and clears static data (fixes sticky scores) ---
+    // Reset singleton before scene loads
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void ResetStatics_BeforeSceneLoad()
     {
@@ -70,25 +61,33 @@ public class RoundManager : MonoBehaviour
 
     void Awake()
     {
-        // Singleton setup
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
 
-        // ✅ Always clear and rebuild scores on scene load
+        // Init scores
         scores.Clear();
         foreach (var p in players)
             if (p != null)
                 scores[p] = 0;
 
-        // Hide UI panels on load; we'll show/hide as the round begins/ends.
-        if (setupPanel != null) setupPanel.SetActive(false);   // ensure no flicker before Start() runs
+        if (setupPanel != null) setupPanel.SetActive(false);
         if (resultsPanel != null) resultsPanel.SetActive(false);
+
+        // Make sure winner is hidden on start
+        if (winnerDisplay != null)
+            winnerDisplay.Hide();
     }
 
     void Start()
     {
-        // ✅ ALWAYS start a new round on scene load/reload
-        BeginRound();
+        if (autoStart)
+            BeginRound();
+        else
+            UpdateTimerUI(roundDurationSeconds);
     }
 
     void Update()
@@ -104,28 +103,31 @@ public class RoundManager : MonoBehaviour
             EndRound();
     }
 
-    // ===== Public API =====
-    public void BeginRoundFromUI(TMP_InputField durationField = null)
-    {
-        if (durationField != null && int.TryParse(durationField.text, out var secs))
-            roundDurationSeconds = Mathf.Max(5, secs);
-        BeginRound();
-    }
+    // ===== Round Control =====
 
     public void BeginRoundFromUI_NoParam()
     {
-        if (durationInput != null && int.TryParse(durationInput.text, out var secs))
+        if (durationInput != null && int.TryParse(durationInput.text, out int secs))
             roundDurationSeconds = Mathf.Max(5, secs);
+
         BeginRound();
     }
 
     public void BeginRound()
     {
-        if (players.Count == 0) { Debug.LogWarning("RoundManager: No players assigned."); return; }
+        if (players.Count == 0)
+        {
+            Debug.LogWarning("RoundManager: No players assigned.");
+            return;
+        }
 
-        // reset per-round scores
-        foreach (var key in new List<GameObject>(scores.Keys))
-            scores[key] = 0;
+        // ✅ Allow score changes at the start of the round
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.UnlockScores();
+
+        // Reset local scores for this round (they will be refilled from ScoreManager at EndRound)
+        foreach (var k in new List<GameObject>(scores.Keys))
+            scores[k] = 0;
 
         timeLeft = Mathf.Max(1, roundDurationSeconds);
         state = RoundState.Playing;
@@ -133,9 +135,14 @@ public class RoundManager : MonoBehaviour
         if (setupPanel != null) setupPanel.SetActive(false);
         if (resultsPanel != null) resultsPanel.SetActive(false);
 
-        UnfreezePlayers(true);
-        if (logDebug) Debug.Log("[RoundManager] Round started.");
+        // Hide previous winner graphic (if any)
+        if (winnerDisplay != null)
+            winnerDisplay.Hide();
+
+        SetPlayerControllersEnabled(true);
+
         UpdateTimerUI(timeLeft);
+        if (logDebug) Debug.Log("[RoundManager] Round started.");
     }
 
     public void EndRound()
@@ -143,63 +150,133 @@ public class RoundManager : MonoBehaviour
         if (state != RoundState.Playing) return;
         state = RoundState.Finished;
 
-        TogglePlayerControl(false);
+        // 🚫 Stop any further score changes in ScoreManager
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.LockScores();
 
-        foreach (var p in players)
-        {
-            if (p == null) continue;
-            StartCoroutine(GroundAndFreeze(p));
-        }
+        // Disable PlayerController + stop horizontal movement
+        SetPlayerControllersEnabled(false);
 
+        // ----- Determine winner using ScoreManager -----
         int best = int.MinValue;
-        var winners = new List<GameObject>();
-        foreach (var kv in scores)
+        List<GameObject> winners = new List<GameObject>();
+
+        scores.Clear(); // we'll refill it from ScoreManager
+
+        if (ScoreManager.Instance != null)
         {
-            if (kv.Value > best) { best = kv.Value; winners.Clear(); winners.Add(kv.Key); }
-            else if (kv.Value == best) winners.Add(kv.Key);
+            foreach (var p in players)
+            {
+                if (p == null) continue;
+
+                var pc = p.GetComponentInChildren<PlayerController>(true);
+                if (pc == null) continue;
+
+                // Get the real score from ScoreManager using playerId
+                int sc = ScoreManager.Instance.GetScore(pc.playerId);
+                scores[p] = sc;
+
+                if (sc > best)
+                {
+                    best = sc;
+                    winners.Clear();
+                    winners.Add(p);
+                }
+                else if (sc == best)
+                {
+                    winners.Add(p);
+                }
+            }
+        }
+        else
+        {
+            // Fallback: use whatever is in local scores
+            foreach (var kv in scores)
+            {
+                if (kv.Value > best)
+                {
+                    best = kv.Value;
+                    winners.Clear();
+                    winners.Add(kv.Key);
+                }
+                else if (kv.Value == best)
+                {
+                    winners.Add(kv.Key);
+                }
+            }
         }
 
+        // ----- Show winner sprite + custom text -----
+        if (winnerDisplay != null && winners.Count > 0)
+        {
+            // For now, if there is a tie, we just show the first winner's sprite.
+            var winningGO = winners[0];
+            var pc = winningGO.GetComponentInChildren<PlayerController>(true);
+            if (pc != null)
+            {
+                winnerDisplay.ShowWinner(pc.playerId);
+            }
+            else
+            {
+                Debug.LogWarning("RoundManager: Winner has no PlayerController with playerId.", winningGO);
+            }
+        }
+
+        // ----- Results UI -----
         if (resultsPanel != null) resultsPanel.SetActive(true);
         if (resultsText != null) resultsText.text = BuildResultsText(winners, best);
 
-        if (logDebug) Debug.Log("[RoundManager] Round ended. " + BuildResultsText(winners, best));
-    }
-
-    public void AddScore(GameObject player, int points = 1)
-    {
-        if (state != RoundState.Playing) return;
-        if (player == null) return;
-        if (!scores.ContainsKey(player)) scores[player] = 0;
-
-        scores[player] += points;
-        if (logDebug) Debug.Log($"[RoundManager] +{points} to {player.name}. Total={scores[player]}");
+        if (logDebug) Debug.Log("[RoundManager] Round ended.");
     }
 
     public void ResetToSetup()
     {
         state = RoundState.Idle;
+
         if (setupPanel != null) setupPanel.SetActive(true);
         if (resultsPanel != null) resultsPanel.SetActive(false);
-        UpdateTimerUI(roundDurationSeconds);
-        UnfreezePlayers(true);
+
+        timeLeft = roundDurationSeconds;
+        UpdateTimerUI(timeLeft);
+
+        SetPlayerControllersEnabled(true);
+
+        // Hide winner when going back to setup
+        if (winnerDisplay != null)
+            winnerDisplay.Hide();
     }
 
-    // ===== Internals =====
+    // ===== UI =====
+
     void UpdateTimerUI(float seconds)
     {
         if (timeText == null) return;
-        int s = Mathf.Max(0, Mathf.FloorToInt(seconds));
-        int m = s / 60;
-        int r = s % 60;
-        timeText.text = $"{m:00}:{r:00}";
+
+        int s = Mathf.FloorToInt(seconds);
+        if (s < 0) s = 0;
+
+        if (showAsTotalSeconds)
+        {
+            // Example: 120, 59, 0...
+            timeText.text = s.ToString();
+        }
+        else
+        {
+            // Example: 02:00, 00:59, 00:00...
+            int m = s / 60;
+            int r = s % 60;
+            timeText.text = $"{m:00}:{r:00}";
+        }
     }
 
     string BuildResultsText(List<GameObject> winners, int best)
     {
         var sb = new StringBuilder();
 
-        if (winners.Count == 0) sb.AppendLine("No winners.");
-        else if (winners.Count == 1) sb.AppendLine($"Winner: {winners[0].name} ({best} pts)");
+        if (winners.Count == 0)
+            sb.AppendLine("No winners.");
+        else if (winners.Count == 1)
+            sb.AppendLine($"Winner: {winners[0].name} ({best} pts)");
         else
         {
             sb.Append("Tie: ");
@@ -213,145 +290,54 @@ public class RoundManager : MonoBehaviour
 
         sb.AppendLine();
         sb.AppendLine("Scores:");
+
         foreach (var p in players)
         {
             if (p == null) continue;
-            scores.TryGetValue(p, out var sc);
+            scores.TryGetValue(p, out int sc);
             sb.AppendLine($"- {p.name}: {sc}");
         }
+
         return sb.ToString();
     }
 
-    void TogglePlayerControl(bool allow)
+    // ===== Movement Control =====
+
+    void SetPlayerControllersEnabled(bool enabled)
     {
         foreach (var p in players)
         {
             if (p == null) continue;
 
-#if ENABLE_INPUT_SYSTEM
-            var pi = p.GetComponentInChildren<PlayerInput>();
-            if (pi != null) pi.enabled = allow;
-#endif
-            if (!string.IsNullOrEmpty(movementScriptTypeName))
-            {
-                var t = FindTypeByName(movementScriptTypeName);
-                if (t != null)
-                {
-                    var comp = p.GetComponentInChildren(t) as Behaviour;
-                    if (comp != null) comp.enabled = allow;
-                }
-            }
-        }
-    }
-
-    System.Collections.IEnumerator GroundAndFreeze(GameObject playerRoot)
-    {
-        if (playerRoot == null) yield break;
-
-        var rb = playerRoot.GetComponentInChildren<Rigidbody2D>();
-        var col = playerRoot.GetComponentInChildren<Collider2D>();
-        if (rb == null || col == null) yield break;
-
-        if (rb.bodyType != RigidbodyType2D.Dynamic) rb.bodyType = RigidbodyType2D.Dynamic;
-        if (rb.gravityScale <= 0f) rb.gravityScale = 1f;
-
-        rb.simulated = true;
-#if UNITY_6000_0_OR_NEWER
-        var v = rb.linearVelocity;
-        rb.linearVelocity = new Vector2(0f, v.y);
-#else
-        var v = rb.velocity;
-        rb.velocity = new Vector2(0f, v.y);
-#endif
-        rb.angularVelocity = 0f;
-
-        rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
-
-        float t = 0f;
-        while (!IsGrounded(col) && t < groundWaitTimeout)
-        {
-            t += Time.unscaledDeltaTime;
-            yield return null;
-        }
-
-        if (groundSettleDelay > 0f) yield return new WaitForSecondsRealtime(groundSettleDelay);
-
-#if UNITY_6000_0_OR_NEWER
-        rb.linearVelocity = Vector2.zero;
-#else
-        rb.velocity = Vector2.zero;
-#endif
-        rb.angularVelocity = 0f;
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        rb.simulated = false;
-
-        if (logDebug)
-            Debug.Log($"[RoundManager] Grounded & frozen: {playerRoot.name} (waited {t:0.00}s)");
-    }
-
-    bool IsGrounded(Collider2D col)
-    {
-        Bounds b = col.bounds;
-        Vector2 origin = new Vector2(b.center.x, b.min.y + 0.01f);
-        float dist = Mathf.Max(0.01f, groundProbeDistance);
-        RaycastHit2D hit = Physics2D.Raycast(origin, Vector2.down, dist, groundMask);
-#if UNITY_EDITOR
-        Debug.DrawRay(origin, Vector2.down * dist, hit.collider ? Color.green : Color.red, 0.05f);
-#endif
-        return hit.collider != null;
-    }
-
-    void UnfreezePlayers(bool allowMove)
-    {
-        foreach (var p in players)
-        {
-            if (p == null) continue;
+            // Movement script
+            var pc = p.GetComponentInChildren<PlayerController>(true);
+            if (pc != null)
+                pc.enabled = enabled;
 
 #if ENABLE_INPUT_SYSTEM
-            var pi = p.GetComponentInChildren<PlayerInput>();
-            if (pi != null) pi.enabled = allowMove;
+            // Optional: Input System
+            var pi = p.GetComponentInChildren<PlayerInput>(true);
+            if (pi != null)
+                pi.enabled = enabled;
 #endif
-            if (!string.IsNullOrEmpty(movementScriptTypeName))
-            {
-                var t = FindTypeByName(movementScriptTypeName);
-                if (t != null)
-                {
-                    var comp = p.GetComponentInChildren(t) as Behaviour;
-                    if (comp != null) comp.enabled = allowMove;
-                }
-            }
 
-            var rb = p.GetComponentInChildren<Rigidbody2D>();
+            // Rigidbody horizontal stop
+            var rb = p.GetComponentInChildren<Rigidbody2D>(true);
             if (rb != null)
             {
 #if UNITY_6000_0_OR_NEWER
-                rb.linearVelocity = Vector2.zero;
+                var v = rb.linearVelocity;
+                if (!enabled) v.x = 0f;
+                rb.linearVelocity = v;
 #else
-                rb.velocity = Vector2.zero;
+                var v = rb.velocity;
+                if (!enabled) v.x = 0f;
+                rb.velocity = v;
 #endif
-                rb.angularVelocity = 0f;
-
-                if (allowMove)
-                {
-                    rb.simulated = true;
-                    rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                }
-                else
-                {
-                    rb.constraints = RigidbodyConstraints2D.FreezeAll;
-                    rb.simulated = false;
-                }
             }
         }
-    }
 
-    Type FindTypeByName(string name)
-    {
-        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-        {
-            var t = asm.GetType(name);
-            if (t != null) return t;
-        }
-        return null;
+        if (logDebug)
+            Debug.Log($"[RoundManager] PlayerController enabled = {enabled}");
     }
 }

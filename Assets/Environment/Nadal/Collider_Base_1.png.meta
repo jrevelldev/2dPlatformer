@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 03e66fd49d6b0d14fb0dea5760016dfe
+guid: 998e2f9439da97e49a88f4ce3ab441ed
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9127188645160120757
-    second: Collider_Porta_0
+      213: -2669291573312834772
+    second: Collider_Base_1 (1)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Collider_Porta_0
+      name: Collider_Base_1 (1)_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 241
-        height: 201
+        width: 1500
+        height: 114
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +154,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5b17fb007b94aae70800000000000000
-      internalID: 9127188645160120757
+      spriteID: c23beb2e475c4fad0800000000000000
+      internalID: -2669291573312834772
       vertices: []
       indices: 
       edges: []
@@ -174,7 +174,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Collider_Porta_0: 9127188645160120757
+      Collider_Base_1 (1)_0: -2669291573312834772
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
